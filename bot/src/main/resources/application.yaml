@@ -1,0 +1,43 @@
+server:
+  port: 8080
+
+spring:
+  config:
+    import: 
+      - classpath:commands.properties.yml
+      - optional:file:./bot/.env[.properties]
+  application:
+    name: bot
+
+  kafka:
+    bootstrap-servers:
+      - kafka1:9092
+      - kafka2:9092
+      - kafka3:9092
+
+    consumer:
+      group-id: link-tracker-bot
+      auto-offset-reset: earliest
+
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+
+      properties:
+        "[spring.json.use.type.headers]": false
+        "[spring.json.value.default.type]": backend.academy.linktracker.bot.model.dto.LinkUpdateRequestDto
+        "[spring.json.trusted.packages]": backend.academy.linktracker.bot.model.dto
+
+app:
+  telegram:
+    url: https://api.telegram.org/bot
+    token: ${TELEGRAM_TOKEN} # Use env variable. DO NOT KEEP TOKEN HERE
+    update-listener-sleep: 1s
+    debug: false
+  scrapper:
+    url: ${SCRAPPER_URL:http://localhost:8081}
+
+  notification:
+    transport: KAFKA
+
+  kafka:
+    topic: link-updates

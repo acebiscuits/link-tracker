@@ -1,0 +1,54 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: scrapper
+  datasource:
+    url: jdbc:postgresql://postgresql-db:5432/link-tracker
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  liquibase:
+    enabled: false
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+    # url: jdbc:postgresql://localhost:5432/linktracker
+    # user: ${POSTGRES_USER}
+    # password: ${POSTGRES_PASSWORD}
+
+  kafka:
+    bootstrap-servers:
+      - kafka1:9092
+      - kafka2:9092
+      - kafka3:9092
+    
+    producer:
+      acks: all
+
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+
+    # properties:
+    #   "[spring.json.add.type.headers]": false
+
+app:
+  notification:
+    transport: KAFKA
+  
+  kafka:
+    topic: link-updates
+
+  access-type: SQL
+  scrapper:
+    batch-size: 100
+    preview-length: 200
+    check-interval-ms: 60000
+  scheduler:
+    check-interval-ms: 10000
+  bot:
+    url: ${BOT_URL:http://localhost:8080}
+  stackoverflow:
+    key: ${STACKOVERFLOW_KEY} # Use env variable. DO NOT KEEP TOKEN HERE
+    access-token: ${STACKOVERFLOW_ACCESS_KEY} # Use env variable. DO NOT KEEP TOKEN HERE
+  github:
+    token: ${GITHUB_TOKEN} # Use env variable. DO NOT KEEP TOKEN HERE

@@ -1,0 +1,54 @@
+bot-commands-properties:
+  commands:
+    start:
+      command: /start
+      description: Start bot
+      responses: 
+        starting-conversation: Hello. Type "/help" to see all commands
+
+    help:
+      command: /help
+      description: Show all commands
+      responses:
+        helping: |
+          /start - start bot
+          /help - show all commands
+
+    list-links:
+      command: /list
+      description: Get links list
+      responses:
+        waiting-tags: Input tags OR "-" to skip
+        empty-lsit: No suitable links
+        bad-request: Incorrect request parameters
+        not-found: Chat doesn't exist
+        scrapper-error: Scrapper fucked-up
+
+    track:
+      command: /track
+      description: Add link to track
+      responses: 
+        waiting-link: Input link to tracking
+        invalid-link: Incorrect link you muppet. Input correct or any other command
+        waiting-tags: Input tags OR "-" to skip
+        waiting-filters: Input filters OR "-" to skip
+        success: Link is tracking now
+        bad-request: Incorrect request parameters
+        not-found: Chat doesn't exist
+        conflict: Link is already tracking
+        scrapper-error: Scrapper fucked-up
+
+    untrack:
+      command: /untrack
+      description: Stop tracking link
+      responses:
+        waiting-link: Input link to untrack
+        invalid-link: Incorrect link you muppet. Input correct or any other command
+        success: Link successfully deleted
+        bad-request: Incorrect request parameters
+        not-found: Chat doesn't exist or link not found
+        scrapper-error: Scrapper fucked-up
+
+    unknown:
+      responses:
+        unknowing: Unknown command - use "/help" to see all commands
